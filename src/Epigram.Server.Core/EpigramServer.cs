@@ -10,5 +10,10 @@ namespace Epigram.Server.Core
         {
             configurationAction(_configuration);
         }
+
+        public SpaceRef Spaces(string id)
+        {
+            return _configuration.StorageStrategy.Space.GetOrAdd(id);
+        }
     }
 }
