@@ -1,4 +1,5 @@
 ﻿using System;
+using Epigram.Server.Core.Storage;
 
 namespace Epigram.Server.Core
 {
@@ -11,9 +12,6 @@ namespace Epigram.Server.Core
             configurationAction(_configuration);
         }
 
-        public SpaceRef Spaces(string id)
-        {
-            return _configuration.StorageStrategy.Space.GetOrAdd(id);
-        }
+        public ISpaceStorage Spaces => _configuration.StorageStrategy.Space;
     }
 }

@@ -29,7 +29,7 @@ namespace Epigram.Server.Core.Test.Unit
         [Test]
         public void Spaces_IdExists_ReturnsSpaceRef()
         {
-            var space = _server.Spaces("1234");
+            var space = _server.Spaces.GetOrAdd("1234");
 
             Assert.That(space, Is.Not.Null);
             Assert.That(space.Id, Is.EqualTo("1234"));
@@ -38,8 +38,8 @@ namespace Epigram.Server.Core.Test.Unit
         [Test]
         public void Spaces_SameReturnedTwice_IsNotTheSameChunkOfMemory()
         {
-            var space = _server.Spaces("1234");
-            var space2 = _server.Spaces("1234");
+            var space = _server.Spaces.GetOrAdd("1234");
+            var space2 = _server.Spaces.GetOrAdd("1234");
 
             Assert.That(space, Is.Not.EqualTo(space2));
         }
@@ -47,8 +47,8 @@ namespace Epigram.Server.Core.Test.Unit
         [Test]
         public void Spaces_SameReturnedTwice_ChangesDontMagicallyCascade()
         {
-            var space = _server.Spaces("1234");
-            var space2 = _server.Spaces("1234");
+            var space = _server.Spaces.GetOrAdd("1234");
+            var space2 = _server.Spaces.GetOrAdd("1234");
 
             space2.Id = "12541622";
 
@@ -61,7 +61,7 @@ namespace Epigram.Server.Core.Test.Unit
             var fakeStorageStrategy = new FakeStorageStrategy();
             _server.Configure(x=> { x.StorageStrategy = fakeStorageStrategy; });
 
-            _server.Spaces("1");
+            _server.Spaces.GetOrAdd("1");
 
             Assert.That(fakeStorageStrategy.LastRequestedId, Is.EqualTo("1"));
         }
